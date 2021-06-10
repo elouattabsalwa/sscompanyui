@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SSCompany UI</title>
+
+    <style>
+
+
+body {
+    background-color: #6f00aa;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-top: 60px;
+    z-index: 900;
+    position:relative;
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,900&display=swap');
+
+h1 {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+  display: block;
+  color: #62006b;
+  font-size: 124px;
+  letter-spacing: 8px;
+  cursor: pointer;
+}
+
+h1::before {
+  content: "SSCompany";
+  position: absolute;
+  color: transparent;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0,
+    transparent 2px,
+    white 2px,
+    white 4px
+  );
+  -webkit-background-clip: text;
+  top: 0px;
+  left: 0;
+  z-index: -1;
+  transition: 1s;
+}
+
+h1::after {
+  content: "SSCompany";
+  position: absolute;
+  color: transparent;
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0,
+    transparent 2px,
+    white 2px,
+    white 4px
+  );
+  -webkit-background-clip: text;
+  top: 0px;
+  left: 0px;
+  transition: 1s;
+}
+
+h1:hover:before {
+  top: 10px;
+  left: 10px;
+}
+
+h1:hover:after {
+  top: -10px;
+  left: -10px;
+} 
+#particles-js {
+    position : absolute;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+      #custom-button {
+      padding: 10px;
+      color: white;
+      background-color: #9a83a6;
+      border: 1px solid #000;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 30px;
+    }
+  
+    #custom-button:hover {
+      background-color:#f0a2f2;
+      margin-left: 30px;
+    }
+  
+    #custom-text {
+      margin-left: 10px;
+      font-family: sans-serif;
+      color: #aaa;
+    }
+  
+        .formBox{
+            padding: 0.5rem 2rem;
+        }
+        label {
+         display: flex;
+         align-items: center;
+       }
+
+        span::after {
+          padding-left: 5px;
+        }
+
+        input:invalid + span::after {
+          content: '✖';
+        }
+
+        input:valid+span::after {
+          content: '✓';
+        }
+    </style>
+</head>
+<body>
+<!-- particles.js container -->
+<div id="particles-js"></div>
+<!-- particles.js lib - https://github.com/VincentGarreau/particles.js -->
+<script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"> 
+</script>
+    <form>
+      <div>
+        <h1>SSCompany</h1>
+        <button type="button" id="custom-button" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;color:#000000">Choisissez un fichier</button>
+        <span id="custom-text" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;color:#000000">Pas de fichier choisi</span>
+    </div>
+        <div class="formBox">
+            <label for="utilisateur" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: #a69ba8">Utilisateur</label>
+            <input type="text" id="utilisateur" placeholder="Votre nom et prénom"/>
+            <input type="file" id="real-file" hidden="hidden" />
+        </div>
+        <div class="formBox">
+            <label for="start" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;color: #a69ba8">Date:</label>
+            <input type="date" id="start" name="trip-start"
+                   value="2017-07-22"
+                   min="2017-01-01" max="2021-12-31">
+            </input>
+        </div>
+        <div class="formBox">
+            <button id="btn" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: #463152 ">Cliquer pour ajouter le fichier à la liste blanche</button>
+        </div>
+        <div id="msg">
+            <pre></pre>
+        </div>
+    </form>
+    <script>
+        let Users = [];
+        // example {id:1592304983049, title: 'Deadpool', year: 2015}
+        const addUser = (ev)=>{
+            ev.preventDefault();  //to stop the form submitting
+            let user = {
+                utilisateur: document.getElementById('utilisateur').value,
+                date: document.getElementById('start').value,
+                fichier: document.getElementById('real-file').value
+            }
+            Users.push(user);
+            document.forms[0].reset(); // to clear the form for the next entries
+            //document.querySelector('form').reset();
+
+            //for display purposes only
+            console.warn('added' , {Users} );
+            let pre = document.querySelector('#msg pre');
+            pre.textContent = '\n' + JSON.stringify(Users, '\t', 2);
+
+            //saving to localStorage
+            localStorage.setItem('MyUserList', JSON.stringify(Users) );
+        }
+        document.addEventListener('DOMContentLoaded', ()=>{
+            document.getElementById('btn').addEventListener('click', addUser);
+        });
+    </script>
+    <script type="text/javascript">
+    const realFileBtn = document.getElementById("real-file");
+    const customBtn = document.getElementById("custom-button");
+    const customTxt = document.getElementById("custom-text");
+
+    customBtn.addEventListener("click", function() {
+    realFileBtn.click();
+   });
+
+    realFileBtn.addEventListener("change", function() {
+    if (realFileBtn.value) {
+       customTxt.innerHTML = realFileBtn.value.match(
+       /[\/\\]([\w\d\s\.\-\(\)]+)$/
+     )[1];
+    } else {
+     customTxt.innerHTML = "Pas de fichier choisi encore";
+    }
+    });
+    window.addEventListener("hashchange", function() {
+    scrollBy(0, -55);
+});
+
+particlesJS("particles-js", {
+    particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: "#ffffff" },
+        shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 5 },
+            image: { src: "img/github.svg", width: 100, height: 100 }
+        },
+        opacity: {
+            value: 0.5,
+            random: false,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false }
+        },
+        size: {
+            value: 3,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
+        },
+        line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1
+        },
+        move: {
+            enable: true,
+            speed: 6,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false, rotateX: 600, rotateY: 1200 }
+        }
+    },
+    interactivity: {
+        detect_on: "canvas",
+        events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true
+        },
+        modes: {
+            grab: { distance: 400, line_linked: { opacity: 1 } },
+            bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+            repulse: { distance: 100, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 }
+        }
+    },
+    retina_detect: true
+});
+var count_particles, stats, update;
+stats = new Stats();
+stats.setMode(0);
+stats.domElement.style.position = "absolute";
+stats.domElement.style.left = "0px";
+stats.domElement.style.top = "0px";
+document.body.appendChild(stats.domElement);
+count_particles = document.querySelector(".js-count-particles");
+update = function() {
+    stats.begin();
+    stats.end();
+    if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+        count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+    }
+    requestAnimationFrame(update);
+};
+requestAnimationFrame(update);
+
+    </script>
+</body>
+</html>
